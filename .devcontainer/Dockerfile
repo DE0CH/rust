@@ -1,18 +1,10 @@
-FROM alpine:latest
+# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/debian/.devcontainer/base.Dockerfile
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories
-RUN apk update
-RUN apk add git sudo zsh thefuck bash curl htop
-RUN echo "vscode ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
+# [Choice] Debian version (use bullseye on local arm64/Apple Silicon): bullseye, buster
+ARG VARIANT="buster"
+FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
 
-RUN adduser -D -s /bin/zsh vscode 
+# ** [Optional] Uncomment this section to install additional packages. **
+# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+#     && apt-get -y install --no-install-recommends <your-package-list-here>
 
-USER vscode 
-RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/DE0CH/dotfiles/master/setup-zsh.sh)"
-RUN echo 'eval $(thefuck --alias)' >> /home/vscode/.zshrc
-WORKDIR /home/vscode
-
-USER root
-# Project specific stuff
-
-RUN apk add g++ python3 make cmake ninja curl git openssl-dev
