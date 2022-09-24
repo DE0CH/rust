@@ -15,3 +15,4 @@ WORKDIR /home/vscode
 USER root
 # Project specific stuff
 
+RUN apk add g++ python3 make cmake ninja curl git openssl-dev
